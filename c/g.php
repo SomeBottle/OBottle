@@ -203,6 +203,13 @@ if ($type == 'getpage') {
 					}
                     $html = Markdown(htmlspecialchars_decode($pcontent));
                     $c = preg_replace("/\t|\[content\]/", $html, $c);
+					$tagh=explode(',',$tag);
+					$taghs='<div class=\'tagdiv\'><img src=\'./c/tag.png\' style=\'width:16px;\'></img>';
+					foreach($tagh as $val){
+						$taghs=$taghs.'<a href=\'#tag/'.$val.'\' target=\'_self\' class=\'tag\'>'.$val.'</a>&nbsp;';
+					}
+					$taghs=$taghs.'</div>';
+					$c = preg_replace("/\t|\[tag\]/",$taghs, $c);
 					$kb=explode('[!page]',$c);
 					if($ptype=='page'){
 						$c=$kb[0];

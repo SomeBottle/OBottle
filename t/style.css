@@ -17,6 +17,15 @@
 img{
 	max-width:100%;
 }
+.tag{
+	text-decoration:none;
+	color:0099CC;
+}
+.tagdiv{
+	text-align:left;
+	width:100%;
+	font-size:15px;
+}
 .date{
 	color:#AAA;
 }
