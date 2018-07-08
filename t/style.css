@@ -15,7 +15,7 @@
 	line-height:1px;
 }
 img{
-	width:100%;
+	max-width:100%;
 }
 .date{
 	color:#AAA;
