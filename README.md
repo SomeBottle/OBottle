@@ -1,7 +1,12 @@
 # OBottle
 ## 更轻量的免数据库博客——OBottle  
 * Markdown解析器源于PHP-Markdown  
+<<<<<<< HEAD
+![](https://ww2.sinaimg.cn/large/ed039e1fgy1ft3gual1czj20qc0englt)   
+
+=======
  
+>>>>>>> f9f5b519d04eb08d2f71290a9a920a2e19783edf
 --------------------------------
 <h3 style='color:0099FF;'>麻雀虽小，五脏俱全</h3> 
 
@@ -23,3 +28,11 @@
 2. 访问/a/，会显示让你用指定方式生成通行证，之后登陆即可发布文章/页面.
 3. 修改/a/conf.php文件以达到配置的目的。
 然后 ...好好享受♂吧！ 
+<<<<<<< HEAD
+
+--------------------------------
+## 隐藏的东西
+* 标签页http://localhost/#tag
+* 搜索文章http://localhost/#?搜索内容
+=======
+>>>>>>> f9f5b519d04eb08d2f71290a9a920a2e19783edf

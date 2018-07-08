@@ -41,7 +41,11 @@ if ($type == 'getpage') {
                     $in = $clip[$chsload];
                     /*先获取置顶文章列表*/
                     $tops = explode(',', $tp);
-                    foreach ($tops as $val) {
+                    foreach ($tops as $ks=>$val) {
+						$tops[$ks]=intval($val);
+						if(trim($val)==''){
+							$tops[$ks]='none';
+						}
                         if ($val !== '') {
                             $k = file_get_contents('./../t/posts.html');
                             require './../p/' . $val . '.php';
@@ -70,7 +74,7 @@ if ($type == 'getpage') {
                             $ids = $recentid;
                         }
                         foreach ($in as $key => $val) {
-                            if (!in_array($key, $tops,true)) { /*排除置顶文章*/
+                            if (!in_array(intval($key), $tops,true)) { /*排除置顶文章*/
                                 $tp = file_get_contents('./../t/posts.html');
                                 require './../p/' . $key . '.php';
                                 $tp = preg_replace("/\t|\[index\]/", $ids . '.', $tp);
@@ -322,6 +326,12 @@ if ($type == 'getpage') {
         $in = $clip[$chsload];
         /*先获取置顶文章列表*/
         $tops = explode(',', $tp);
+		foreach($tops as $ks=>$val){/*排除PHP带来的BUG*/
+			$tops[$ks]=intval($val);
+			if(trim($val)==''){
+							$tops[$ks]='none';
+						}
+		}
         $recentid = 0; /*计算文章排列ID*/
         foreach ($clip as $key => $val) {
             if ($key < $chsload) {
@@ -341,7 +351,7 @@ if ($type == 'getpage') {
                 $ids = $recentid;
             }
             foreach ($in as $key => $val) {
-                if (!in_array($key, $tops,true)) { /*排除置顶文章*/
+                if (!in_array(intval($key), $tops,true)) { /*排除置顶文章*/
                     $tp = file_get_contents('./../t/posts.html');
                     require './../p/' . $key . '.php';
                     $tp = preg_replace("/\t|\[index\]/", $ids . '.', $tp);
