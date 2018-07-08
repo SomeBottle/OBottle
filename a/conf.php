@@ -1,0 +1,9 @@
+<?php 
+$blog['name']='轻小站';/*小站名称*/
+$blog['intro']='这里是简介哦~';/*小站描述*/
+$blog['frontposts']=7;/*每页显示文章数*/
+$blog['avatar']='https://ww2.sinaimg.cn/large/ed039e1fgy1ft2qzmo771j208c08cq2q';/*头像URL*/
+$blog['host']='http://localhost/';/*小站域名地址(末尾要带上/号)*/
+$blog['keyword']='关键词1,关键词2';/*收录相关关键词，逗号间隔*/
+$blog['descript']='小站描述.';/*收录相关描述*/
+?>
