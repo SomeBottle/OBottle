@@ -1,7 +1,7 @@
 # OBottle
 ## 更轻量的免数据库博客——OBottle  
 * Markdown解析器源于PHP-Markdown  
-<<<<<<< HEAD
+
 ![](https://ww2.sinaimg.cn/large/ed039e1fgy1ft3gual1czj20qc0englt)   
 
 --------------------------------
