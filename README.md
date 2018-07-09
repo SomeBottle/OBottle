@@ -4,9 +4,6 @@
 <<<<<<< HEAD
 ![](https://ww2.sinaimg.cn/large/ed039e1fgy1ft3gual1czj20qc0englt)   
 
-=======
- 
->>>>>>> f9f5b519d04eb08d2f71290a9a920a2e19783edf
 --------------------------------
 <h3 style='color:0099FF;'>麻雀虽小，五脏俱全</h3> 
 
@@ -33,6 +30,4 @@
 --------------------------------
 ## 隐藏的东西
 * 标签页http://localhost/#tag
-* 搜索文章http://localhost/#?搜索内容
-=======
->>>>>>> f9f5b519d04eb08d2f71290a9a920a2e19783edf
+* 搜索文章http://localhost/#?搜索内容  
