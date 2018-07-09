@@ -133,7 +133,7 @@ if ($type == 'getpage') {
 					}
 					$c = preg_replace("/\t|\[tags\]/", $str, $c); /*替换标签页面html*/
 					}else{/*如果有标签索引*/
-						$rt=$hand[1];
+						$rt=urldecode($hand[1]);
 						$ids=1;
 						$poststr='';
 						foreach($tagi as $key=>$val){
@@ -280,6 +280,7 @@ if ($type == 'getpage') {
                                 $ids+= 1;
 				}
 			}
+			$s=urldecode($s);
 			if(!$found){
 				foreach($in as $key=>$val){
 					require './../p/' . $key . '.php';
