@@ -76,7 +76,7 @@ if($type=='submit'){
 		if(valid_date($datestr)){
 		$in[$edits]=$d;
 		}else{
-			$in[$edits]=date('Ymd');
+			$in[$edits]=$in[$edits];
 		}
 		$tagi[$edits]=$a;
 		$tops=explode(',',$tp);
