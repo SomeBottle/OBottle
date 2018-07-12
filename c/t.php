@@ -122,5 +122,5 @@ if($type=='submit'){
 	$result['result']='notok';
 	$result['msg']='请求错误.';
 }
-echo json_encode($result,true);
+echo json_encode($result,JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES);
 ?>
