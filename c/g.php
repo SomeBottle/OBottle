@@ -61,7 +61,7 @@ if ($type == 'getpage') {
                         if ($key < $chsload) {
                             $recentid+= count($val);
                             foreach ($val as $k => $i) {
-                                if (in_array($k, $tops)) {
+                                if (in_array($k, $tops,true)) {/*true用于谨慎类型判断*/
                                     $recentid-= 1;
                                 }
                             }
@@ -346,7 +346,7 @@ if ($type == 'getpage') {
                 $recentid+= count($val);
                 foreach ($val as $k => $i) {
                     //echo $k.' ';
-                    if (in_array($k, $tops)) {
+                    if (in_array($k, $tops,true)) {/*true用于谨慎类型判断*/
                         $recentid-= 1;
                     }
                 }

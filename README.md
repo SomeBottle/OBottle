@@ -31,3 +31,9 @@
 ## 隐藏的东西
 * 标签页http://localhost/#tag
 * 搜索文章http://localhost/#?搜索内容  
+
+<ul>可搜索内容：
+<li>日期</li>
+<li>文章标题</li>
+<li>文章内容</li>
+</ul>
