@@ -1,18 +1,33 @@
 <?php 
 error_reporting(E_ALL^E_NOTICE^E_WARNING);
 session_start();
+function grc($length){
+   $str = null;
+   $strPol = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz7823647^&*^&*^&(^GYGdghevghwevfghfvgrf_+KD:QW{D
+   NUIGH^&S%$X%#$"}{{}":":L:"';
+   $max = strlen($strPol)-1;
+   for($i=0;$i<$length;$i++){
+    $str.=$strPol[rand(0,$max)];
+   }
+   return $str;
+  }  
+$salt=base64_encode(base64_encode(grc(64)).base64_encode(grc(64)).base64_encode(grc(64)).base64_encode(grc(64)).base64_encode(grc(64)));
+function fcrypt($s){
+	global $salt;
+	return sha1(crypt(sha1($s),$salt));
+}
 $request=@explode('?',$_SERVER['REQUEST_URI'])[1];
 if($_SESSION['log']!=='yes'){
 if($request=='log'){
 	if(!file_exists('./passport.php')){
 		if(stripos($_POST['auth'],':')!==false){
-		file_put_contents('./passport.php','<?php $authid=\''.md5($_POST['auth']).'\';?>');
+		file_put_contents('./passport.php','<?php $authid=\''.fcrypt($_POST['auth']).'\';$authsalt=\''.$salt.'\';?>');
 		}else{
 			echo "<script>alert('请按格式来哦');</script>";
 		}
 	}else{
 		require_once './passport.php';
-		if($authid==md5($_POST['auth'])){
+		if($authid==sha1(crypt(sha1($_POST['auth']),$authsalt))){
 			$_SESSION['log']='yes';
 			header('Location: edit.php');
 		}else{
