@@ -136,6 +136,7 @@ if ($type == 'getpage') {
 						$rt=urldecode($hand[1]);
 						$ids=1;
 						$poststr='';
+						krsort($tagi);/*使得标签页文章由新到旧显示*/
 						foreach($tagi as $key=>$val){
 							$ps=explode(',',$val);
 							$found=false;
