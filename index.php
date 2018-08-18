@@ -7,7 +7,6 @@
 	  <meta name="description" content="<?php echo descript();?>" />
 	  <meta name="keywords" content="<?php echo keyword();?>" />
 	  <link href="./c/m.css" rel="stylesheet">
-	  <link href="./c/b.css" rel="stylesheet">
       <script src="./c/jquery.min.js"></script>
 	</head>
 </html>
