@@ -1,1 +1,202 @@
-var m=window.location.href;var s=m.split("#");var rh=m;var nowpage=0;var pagetype="normal";var cpage=1;var nextkey;var state=true;var x=new Array();document.getElementById("l").style.display="none";getp("header","h");getp("footer","f");if(s[1]!==null&&s[1]!==undefined&&s[1]!==""){state=false;if(s[1].indexOf("!")!==-1){pagetype="popage"}else{if(s[1].indexOf("?")!==-1){pagetype="search"}else{pagetype="normal"}}nowpage=0;getp(s[1],"c");nextkey="";cpage=1}else{window.location.href=m+"#m"}function checkurl(){pagetype="normal";var i=window.location.href;if(i!==rh){state=false;rh=i;var t=i.split("#");if(t[1].indexOf("!")!==-1){pagetype="popage"}else{if(t[1].indexOf("?")!==-1){pagetype="search"}else{pagetype="normal"}}nowpage=0;cpage=1;getp(t[1],"c")}}onhashchange=function(){checkurl()};setInterval(checkurl,1000);function getp(page,e){var opg=page;if(x[page]!==undefined&&x[page]!==null){var apage=page.split("/");if(apage[0]=="m"){if(apage[1]==null||apage[1]==""){nowpage=1}else{nowpage=parseInt(apage[1])+1}cpage+=1}var c=document.getElementById(e);c.style.opacity=0;$("#"+e).html(x[page]);$("#"+e).animate({opacity:"1"})}else{var cswitch=false;if(pagetype=="normal"){var apage=page.split("/");if(apage[1]!==null&&apage[1]!==undefined&&apage[1]!==""&&apage[0]=="m"){nowpage=Number(apage[1]);page="m"}}else{if(pagetype=="popage"){var apage=page.split("!");if(apage[1]!==null&&apage[1]!==undefined&&apage[1]!==""){page=apage[1];var cswitch=true}}}document.getElementById("l").style.display="block";var c=document.getElementById(e);c.style.opacity=0;$.ajax({type:"post",url:"./c/g.php?type=getpage",data:{p:page,load:nowpage,mode:pagetype},dataType:"text",success:function(msg){var datat="";if(msg!=""){datat=eval("("+msg+")")}data=datat;if(data.result=="ok"){x[opg]=data.r;$("#"+e).html(data.r);if(data.r.match(/^[ ]+$/)){$("#"+e).html("<center><h2 style='color:#AAA;'>QAQ 404</h2></center>")}if(page.indexOf("m")!==-1){allnum=data.allp;if((Number(allnum)-1)<=nowpage){setTimeout(function(){$("#loadmore").remove()},10)}cpage+=1;nowpage+=1}}else{$("#"+e).html("<center><h2 style='color:#AAA;'>"+data.msg+"</h2></center>")}$("#"+e).animate({opacity:"1"});document.getElementById("l").style.display="none";state=true},error:function(msg){$("#"+e).html("<center><h2 style='color:#AAA;'>失去连接~OAO</h2></center>");state=true}})}}function getmore(){cachepage=nowpage;if(cpage<3){$("#loadmore").remove();var e="c";var c=document.getElementById(e);c.style.opacity=0;if(x["m"+nowpage]!==undefined&&x["m"+nowpage]!==null){$("#"+e).html($("#"+e).html()+x["m"+nowpage]);$("#"+e).animate({opacity:"1"});nowpage+=1;cpage+=1}else{document.getElementById("l").style.display="block";$.ajax({type:"post",url:"./c/g.php?type=getmore",data:{load:nowpage},dataType:"text",success:function(msg){var datat="";if(msg!=""){datat=eval("("+msg+")")}data=datat;if(data.result=="ok"){allnum=data.allp;if((Number(allnum)-1)<=nowpage){data.r=data.r+"<script>setTimeout(function(){$('#loadmore').remove();},10);<\/script>";console.log("No more.")}else{nowpage+=1}cpage+=1;$("#"+e).html($("#"+e).html()+data.r);x["m"+cachepage]=data.r}else{document.getElementById(e).innerHTML=document.getElementById(e).innerHTML+"<center><h2 style='color:#AAA;'>"+data.msg+"</h2></center>"}$("#"+e).animate({opacity:"1"});document.getElementById("l").style.display="none";state=true},error:function(msg){alert("加载失败");state=true}})}}else{cpage=0;window.open("#m/"+nowpage,"_self")}}setTimeout(function(){console.clear()},1000);
+var m = window.location.href;
+var s = m.split('#');
+var rh = m;
+var nowpage = 0;
+var pagetype = 'normal';
+var cpage = 1;
+var nextkey;
+var state = true;
+var x = new Array();
+document.getElementById('l').style.display = 'none'; /*预加载页头页尾*/
+getp('header', 'h'); /*页头*/
+getp('footer', 'f'); /*页尾*/
+if (s[1] !== null && s[1] !== undefined && s[1] !== '') {
+	state = false;
+	if (s[1].indexOf('!') !== -1) { /*如果是文章或者页面*/
+		pagetype = 'popage';
+	} else if (s[1].indexOf('?') !== -1) { /*如果是搜索*/
+		pagetype = 'search';
+	} else {
+		pagetype = 'normal';
+	}
+	nowpage = 0;
+	getp(s[1], 'c');
+	nextkey = '';
+	cpage = 1;
+} else {
+	window.location.href = m + '#m';
+}
+
+function checkurl() {
+	pagetype = 'normal';
+	var i = window.location.href;
+	if (i !== rh) {
+		state = false;
+		rh = i;
+		var t = i.split('#');
+		if (t[1].indexOf('!') !== -1) { /*如果是文章或者页面*/
+			pagetype = 'popage';
+		} else if (t[1].indexOf('?') !== -1) { /*如果是搜索*/
+			pagetype = 'search';
+		} else {
+			pagetype = 'normal';
+		}
+		nowpage = 0;
+		cpage = 1;
+		getp(t[1], 'c');
+	}
+}
+onhashchange = function() {
+	checkurl();
+};
+setInterval(checkurl, 1000);
+
+function getp(page, e) {
+	var opg = page;
+	if (x[page] !== undefined && x[page] !== null) {
+		//console.log('Cached Page >3');
+		var apage = page.split('/');
+		if (apage[0] == 'm') {
+			if (apage[1] == null || apage[1] == '') {
+				nowpage = 1;
+			} else {
+				nowpage = parseInt(apage[1]) + 1;
+			}
+			cpage += 1;
+		}
+		var c = document.getElementById(e);
+		c.style.opacity = 0;
+		$('#' + e).html(x[page]);
+		$('#' + e).animate({
+			opacity: '1'
+		});
+	} else { /*预载入页码*/
+		var cswitch = false;
+		if (pagetype == 'normal') {
+			var apage = page.split('/');
+			if (apage[1] !== null && apage[1] !== undefined && apage[1] !== '' && apage[0] == 'm') {
+				nowpage = Number(apage[1]);
+				page = 'm';
+			}
+		} else if (pagetype == 'popage') {
+			var apage = page.split('!');
+			if (apage[1] !== null && apage[1] !== undefined && apage[1] !== '') {
+				page = apage[1];
+				var cswitch = true;
+			}
+		}
+		document.getElementById('l').style.display = 'block';
+		var c = document.getElementById(e);
+		c.style.opacity = 0;
+		$.ajax({
+			type: "post",
+			url: './c/g.php?type=getpage',
+			data: {
+				p: page,
+				load: nowpage,
+				mode: pagetype
+			},
+			dataType: "text",
+			success: function(msg) {
+				var datat = '';
+				if (msg != '') {
+					datat = eval("(" + msg + ")");
+				}
+				data = datat;
+				if (data.result == 'ok') {
+					x[opg] = data.r; /*存入已加载区*/
+					$('#' + e).html(data.r);
+					if (data.r.match(/^[ ]+$/)) {
+						$('#' + e).html('<center><h2 style=\'color:#AAA;\'>QAQ 404</h2></center>');
+					}
+					if (page.indexOf('m') !== -1) {
+						allnum = data.allp;
+						if ((Number(allnum) - 1) <= nowpage) { /*数组count比实际数量多1*/
+							setTimeout(function() {
+								$('#loadmore').remove();
+							}, 10);
+						}
+						cpage += 1;
+						nowpage += 1;
+					}
+				} else {
+					$('#' + e).html('<center><h2 style=\'color:#AAA;\'>' + data.msg + '</h2></center>');
+				}
+				$('#' + e).animate({
+					opacity: '1'
+				});
+				document.getElementById('l').style.display = 'none';
+				state = true;
+			},
+			error: function(msg) {
+				$('#' + e).html('<center><h2 style=\'color:#AAA;\'>失去连接~OAO</h2></center>');
+				state = true;
+			}
+		});
+	}
+}
+
+function getmore() { /*加载更多-函数*/
+	cachepage = nowpage;
+	if (cpage < 3) { /*自动换页*/
+		$('#loadmore').remove();
+		var e = 'c';
+		var c = document.getElementById(e);
+		c.style.opacity = 0;
+		if (x['m' + nowpage] !== undefined && x['m' + nowpage] !== null) {
+			//console.log('Cached Page >3');
+			$('#' + e).html($('#' + e).html() + x['m' + nowpage]);
+			$('#' + e).animate({
+				opacity: '1'
+			});
+			nowpage += 1;
+			cpage += 1;
+		} else {
+			document.getElementById('l').style.display = 'block';
+			$.ajax({
+				type: "post",
+				url: './c/g.php?type=getmore',
+				data: {
+					load: nowpage
+				},
+				dataType: "text",
+				success: function(msg) {
+					var datat = '';
+					if (msg != '') {
+						datat = eval("(" + msg + ")");
+					}
+					data = datat;
+					if (data.result == 'ok') {
+						allnum = data.allp;
+						if ((Number(allnum) - 1) <= nowpage) { /*数组count比实际数量多1*/
+							data.r = data.r + '<script>setTimeout(function(){$(\'#loadmore\').remove();},10);</script>';
+							console.log('No more.');
+						} else {
+							nowpage += 1;
+						}
+						cpage += 1;
+						$('#' + e).html($('#' + e).html() + data.r);
+						x['m' + cachepage] = data.r;
+					} else {
+						document.getElementById(e).innerHTML = document.getElementById(e).innerHTML + '<center><h2 style=\'color:#AAA;\'>' + data.msg + '</h2></center>';
+					}
+					$('#' + e).animate({
+						opacity: '1'
+					});
+					document.getElementById('l').style.display = 'none';
+					state = true;
+				},
+				error: function(msg) {
+					alert('加载失败');
+					state = true;
+				}
+			});
+		}
+	} else {
+		cpage = 0;
+		window.open('#m/' + nowpage, '_self');
+	}
+}
+setTimeout(function() {
+	console.clear();
+}, 1000);
