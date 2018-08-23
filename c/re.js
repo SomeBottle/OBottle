@@ -88,13 +88,21 @@ function getp(page, e) {
 		document.getElementById('l').style.display = 'block';
 		var c = document.getElementById(e);
 		c.style.opacity = 0;
+		var timestamp, cache;
+		if (typeof localStorage['blog' + opg] == 'undefined') {
+			localStorage['blog' + opg] = '';
+		} else {
+			timestamp = localStorage['blog' + opg].split('||CACHE||')[1];
+			cache = localStorage['blog' + opg].split('||CACHE||')[0];
+		}
 		$.ajax({
 			type: "post",
 			url: './c/g.php?type=getpage',
 			data: {
 				p: page,
 				load: nowpage,
-				mode: pagetype
+				mode: pagetype,
+				ts: timestamp
 			},
 			dataType: "text",
 			success: function(msg) {
@@ -104,20 +112,35 @@ function getp(page, e) {
 				}
 				data = datat;
 				if (data.result == 'ok') {
-					x[opg] = data.r; /*存入已加载区*/
-					$('#' + e).html(data.r);
-					if (data.r.match(/^[ ]+$/)) {
-						$('#' + e).html('<center><h2 style=\'color:#AAA;\'>QAQ 404</h2></center>');
-					}
-					if (page.indexOf('m') !== -1) {
-						allnum = data.allp;
-						if ((Number(allnum) - 1) <= nowpage) { /*数组count比实际数量多1*/
-							setTimeout(function() {
-								$('#loadmore').remove();
-							}, 10);
+					if (data.cm == 'cache') {
+						var apage = opg.split('/');
+						if (apage[0] == 'm') {
+							if (apage[1] == null || apage[1] == '') {
+								nowpage = 1;
+							} else {
+								nowpage = parseInt(apage[1]) + 1;
+							}
+							cpage += 1;
 						}
-						cpage += 1;
-						nowpage += 1;
+						$('#' + e).html(cache);
+						x[opg] = cache;
+					} else {
+						x[opg] = data.r; /*存入已加载区*/
+						localStorage['blog' + opg] = data.r + '||CACHE||' + data.ca;
+						$('#' + e).html(data.r);
+						if (data.r.match(/^[ ]+$/)) {
+							$('#' + e).html('<center><h2 style=\'color:#AAA;\'>QAQ 404</h2></center>');
+						}
+						if (page.indexOf('m') !== -1) {
+							allnum = data.allp;
+							if ((Number(allnum) - 1) <= nowpage) { /*数组count比实际数量多1*/
+								setTimeout(function() {
+									$('#loadmore').remove();
+								}, 10);
+							}
+							cpage += 1;
+							nowpage += 1;
+						}
 					}
 				} else {
 					$('#' + e).html('<center><h2 style=\'color:#AAA;\'>' + data.msg + '</h2></center>');
@@ -153,11 +176,20 @@ function getmore() { /*加载更多-函数*/
 			cpage += 1;
 		} else {
 			document.getElementById('l').style.display = 'block';
+			var timestamp;
+			var cache;
+			if (typeof localStorage['blogm' + cachepage] == 'undefined') {
+				localStorage['blogm' + cachepage] = '';
+			} else {
+				timestamp = localStorage['blogm' + cachepage].split('||CACHE||')[1];
+				cache = localStorage['blogm' + cachepage].split('||CACHE||')[0];
+			}
 			$.ajax({
 				type: "post",
 				url: './c/g.php?type=getmore',
 				data: {
-					load: nowpage
+					load: nowpage,
+					ts: timestamp
 				},
 				dataType: "text",
 				success: function(msg) {
@@ -167,16 +199,24 @@ function getmore() { /*加载更多-函数*/
 					}
 					data = datat;
 					if (data.result == 'ok') {
-						allnum = data.allp;
-						if ((Number(allnum) - 1) <= nowpage) { /*数组count比实际数量多1*/
-							data.r = data.r + '<script>setTimeout(function(){$(\'#loadmore\').remove();},10);</script>';
-							console.log('No more.');
-						} else {
+						if (data.cm == 'cache') {
+							$('#' + e).html($('#' + e).html() + cache);
+							x['m' + cachepage] = cache;
 							nowpage += 1;
+							cpage += 1;
+						} else {
+							allnum = data.allp;
+							if ((Number(allnum) - 1) <= nowpage) { /*数组count比实际数量多1*/
+								data.r = data.r + '<script>setTimeout(function(){$(\'#loadmore\').remove();},10);</script>';
+								console.log('No more.');
+							} else {
+								nowpage += 1;
+							}
+							cpage += 1;
+							$('#' + e).html($('#' + e).html() + data.r);
+							x['m' + cachepage] = data.r;
+							localStorage['blogm' + cachepage] = data.r + '||CACHE||' + data.ca; /*加入本地缓存*/
 						}
-						cpage += 1;
-						$('#' + e).html($('#' + e).html() + data.r);
-						x['m' + cachepage] = data.r;
 					} else {
 						document.getElementById(e).innerHTML = document.getElementById(e).innerHTML + '<center><h2 style=\'color:#AAA;\'>' + data.msg + '</h2></center>';
 					}
@@ -198,5 +238,5 @@ function getmore() { /*加载更多-函数*/
 	}
 }
 setTimeout(function() {
-	console.clear();
+	//console.clear();
 }, 1000);

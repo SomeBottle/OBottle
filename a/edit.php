@@ -87,36 +87,7 @@ session_write_close();
 	  <link href="./../c/b.css" rel="stylesheet">
 	  <script src="https://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.min.js"></script>
 	 <style>
-body{
-font-family:'\5FAE\8F6F\96C5\9ED1';
-margin:0 auto;
-}
-.input {
-	width:100%;
-	max-width:500px;
-	border: 1px solid #ccc;
-	padding: 7px 0px;
-	border-radius: 3px;
-	padding-left: 5px;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-	-webkit-transition: border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;
-	-o-transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
-	transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s
-}
-h2{
-	margin-top:30px;
-}
-.input:focus {
-	border-color: #66afe9;
-	outline: 0;
-	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);
-	box-shadow: inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)
-}
-.area{background:#ffffff;border-bottom-color:#ff6633;   border-bottom-width:0px;border-top-width:0px;border-left-width:0px;border-right-width:0px;   solid   #ff6633;   color:   #000000;   FONT-SIZE:   20px;   FONT-STYLE:   normal;   FONT-VARIANT:   normal;   FONT-WEIGHT:   normal;   HEIGHT:   18px;   LINE-HEIGHT:   normal;resize: vertical;width:100%;max-width:500px;height:25%;}   
-.tagi{border-top-width:0px;border-left-width:0px;border-right-width:0px;   solid   #ff6633;}
-.s{width:100%;max-width:500px;text-align:left;margin:0 auto;}
-	a{color:grey;}
+body{font-family:'\5FAE\8F6F\96C5\9ED1';margin:0 auto}.input{font-family:'\5FAE\8F6F\96C5\9ED1';width:100%;max-width:500px;border:1px solid #ccc;padding:7px 0;border-radius:3px;padding-left:5px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;-o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s}h2{margin-top:30px}.input:focus{border-color:#66afe9;outline:0;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)}.area{font-family:'\5FAE\8F6F\96C5\9ED1';background:#fff;border-bottom-color:#f63;border-bottom-width:0;border-top-width:0;border-left-width:0;border-right-width:0;color:#000;FONT-SIZE:20px;FONT-STYLE:normal;FONT-VARIANT:normal;FONT-WEIGHT:normal;HEIGHT:18px;LINE-HEIGHT:normal;resize:vertical;width:100%;max-width:500px;height:25%}.tagi{border-top-width:0;border-left-width:0;border-right-width:0}.s{width:100%;max-width:500px;text-align:left;margin:0 auto}a{color:grey}
 </style>
       <script src="./../c/jquery.min.js"></script>
 	  <title>文章&页面</title>
@@ -131,7 +102,7 @@ h2{
 <p><textarea rows='20' class='area' placeholder='内容Content' name='c' id='c' class='input'><?php echo $pcontent;?></textarea></p>
 <p><input type='text' placeholder='日期Date/页面链接link' class='tagi input' value='<?php if(!empty($pdat)){echo $pdat;}else{echo $daten;};?>' name='d' id='d'></input></p>
 <p><input type='text' placeholder='标签Tag' class='tagi input' name='a' id='a' value='<?php echo $tag;?>'></input></p>
-<p class='s'><a href="javascript:void(0);" onclick='edit()' class="button button-primary button-rounded button-small" id='btn'>(O_o)?</a><input type="checkbox" id='zd' <?php if(checkc()){echo 'checked="true"';}?>/>置顶&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='faq()'>FAQ</a></p>
+<p class='s'><a href="javascript:void(0);" onclick='edit()' class="button button-primary button-rounded" id='btn'>(O_o)?</a><input type="checkbox" id='zd' <?php if(checkc()){echo 'checked="true"';}?>/>置顶&nbsp;&nbsp;&nbsp;<a href='javascript:void(0);' onclick='faq()'>FAQ</a></p>
 <form action="https://sm.ms/api/upload" id="fileinfo" method="post"
 enctype="multipart/form-data" style='display:none;'>
 <input type="file" name="smfile" id="smfile" /> 

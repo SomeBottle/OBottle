@@ -8,7 +8,7 @@ if ($_SESSION['log'] !== 'yes') {
     $result['msg'] = '请登录.';
     echo json_encode($result, true);
     session_write_close();
-    exit();
+    exit;
 }
 session_write_close();
 require_once './f.php';
@@ -21,11 +21,18 @@ $edits = $_POST['editn'];
 $zhiding = $_POST['ifzd'];
 $fstr = '';
 $result['result'] = 'ok';
-function valid_date($date) { /*日期判断函数*/
-    if (preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})$/", $date, $parts)) {
-        if (checkdate($parts[2], $parts[3], $parts[1])) return true;
-        else return false;
-    } else return false;
+function valid_date($date)
+{
+    /*日期判断函数*/
+    if (preg_match("/^([0-9]{4})-([0-9]{2})-([0-9]{2})\$/", $date, $parts)) {
+        if (checkdate($parts[2], $parts[3], $parts[1])) {
+            return true;
+        } else {
+            return false;
+        }
+    } else {
+        return false;
+    }
 }
 if ($type == 'submit') {
     if (!is_dir('./../p/')) {
@@ -35,7 +42,8 @@ if ($type == 'submit') {
         $strs = '<?php $inn=0;$in=array();$tp=\'\';$tagi=array(); ?>';
         file_put_contents('./../p/index.php', $strs);
     }
-    if ($edits == '') { /*新建文章*/
+    if ($edits == '') {
+        /*新建文章*/
         if (!empty($t) && !empty($d) && !empty($c)) {
             if (empty($a)) {
                 $a = '日常';
@@ -65,12 +73,14 @@ if ($type == 'submit') {
                 $fstr = '<?php $ptitle="' . $t . '";$pcontent="' . htmlspecialchars($c) . '";$pdat="' . $d . '";$tag="' . $a . '";$ptype="page";?>';
             }
             file_put_contents('./../p/' . ($inn - 1) . '.php', $fstr);
-            $result['pid'] = ($inn - 1);
+            changed();
+            $result['pid'] = $inn - 1;
         } else {
             $result['result'] = 'notok';
             $result['msg'] = '除了标签，其他内容不得为空.';
         }
-    } else { /*编辑文章*/
+    } else {
+        /*编辑文章*/
         if (!empty($t) && !empty($d) && !empty($c)) {
             if (empty($a)) {
                 $a = '日常';
@@ -116,6 +126,7 @@ if ($type == 'submit') {
                 $fstr = '<?php $ptitle="' . $t . '";$pcontent="' . htmlspecialchars($c) . '";$pdat="' . $d . '";$tag="' . $a . '";$ptype="page";?>';
             }
             file_put_contents('./../p/' . $edits . '.php', $fstr);
+            changed();
             $result['pid'] = $edits;
         } else {
             $result['result'] = 'notok';
@@ -127,4 +138,3 @@ if ($type == 'submit') {
     $result['msg'] = '请求错误.';
 }
 echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-?>
