@@ -227,7 +227,7 @@ if ($type == 'getpage') {
                     $c = preg_replace("/\t|\[date\]/", $pdat, $c);
                     $c = preg_replace("/\t|\[commentid\]/", $page, $c);
                     if ($_SESSION['log'] == 'yes') {
-                        $edith = '<div><a href="/a/edit.php?e=' . $page . '" class="button button-rounded button-small"  target="_blank">编辑</a>&nbsp;<a href="/a/edit.php?e=' . $page . '&t=del" target="_self" class="button button-rounded button-small">删除</a>&nbsp;<a href="javascript:void(0)" onclick="purge()" target="_self" class="button button-rounded button-small">清除缓存</a></div>';
+                        $edith = '<div><a href="/a/edit.php?e=' . $page . '" class="button button-rounded button-small"  target="_blank">编辑</a>&nbsp;<a href="/a/edit.php?e=' . $page . '&t=del" target="_self" class="button button-rounded button-small">删除</a></div>';
                         $c = preg_replace("/\t|\[editbar\]/", $edith, $c);
                     } else {
                         $c = preg_replace("/\t|\[editbar\]/", '', $c);
@@ -259,7 +259,7 @@ if ($type == 'getpage') {
                         $c = preg_replace("/\t|\[date\]/", $pdat, $c);
                         $c = preg_replace("/\t|\[commentid\]/", $key, $c);
                         if ($_SESSION['log'] == 'yes') {
-                            $edith = '<div><a href="/a/edit.php?e=' . $key . '" class="button button-rounded button-small"  target="_blank">编辑</a>&nbsp;<a href="/a/edit.php?e=' . $key . '&t=del" target="_self" class="button button-rounded button-small">删除</a>&nbsp;<a href="javascript:void(0)" onclick="purge()" target="_self" class="button button-rounded button-small">清除缓存</a></div>';
+                            $edith = '<div><a href="/a/edit.php?e=' . $key . '" class="button button-rounded button-small"  target="_blank">编辑</a>&nbsp;<a href="/a/edit.php?e=' . $key . '&t=del" target="_self" class="button button-rounded button-small">删除</a></div>';
                             $c = preg_replace("/\t|\[editbar\]/", $edith, $c);
                         } else {
                             $c = preg_replace("/\t|\[editbar\]/", '', $c);
