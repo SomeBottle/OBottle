@@ -126,7 +126,7 @@ function getp(page, e) {
 						x[opg] = cache;
 					} else {
 						x[opg] = data.r; /*存入已加载区*/
-						if(data.l!==null&&data.l!==undefined&&data.l!=='yes'){
+						if(data.l!=='yes'){
 						localStorage['blog' + opg] = data.r + '||CACHE||' + data.ca;
 						}
 						$('#' + e).html(data.r);
@@ -217,7 +217,7 @@ function getmore() { /*加载更多-函数*/
 							cpage += 1;
 							$('#' + e).html($('#' + e).html() + data.r);
 							x['m' + cachepage] = data.r;
-							if(data.l!==null&&data.l!==undefined&&data.l!=='yes'){
+							if(data.l!=='yes'){
 							localStorage['blogm' + cachepage] = data.r + '||CACHE||' + data.ca; /*加入本地缓存*/
 							}
 						}
