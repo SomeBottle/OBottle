@@ -84,7 +84,6 @@ session_write_close();
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <meta name="viewport" content="width=device-width, initial-scale=1">
 	  <link href="./../c/m.css" rel="stylesheet">
-	  <link href="./../c/b.css" rel="stylesheet">
 	  <script src="https://cdn.bootcss.com/pagedown/1.0/Markdown.Converter.min.js"></script>
 	 <style>
 body{font-family:'\5FAE\8F6F\96C5\9ED1';margin:0 auto}.input{font-family:'\5FAE\8F6F\96C5\9ED1';width:100%;max-width:500px;border:1px solid #ccc;padding:7px 0;border-radius:3px;padding-left:5px;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075);box-shadow:inset 0 1px 1px rgba(0,0,0,.075);-webkit-transition:border-color ease-in-out .15s,-webkit-box-shadow ease-in-out .15s;-o-transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s}h2{margin-top:30px}.input:focus{border-color:#66afe9;outline:0;-webkit-box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6);box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)}.area{font-family:'\5FAE\8F6F\96C5\9ED1';background:#fff;border-bottom-color:#f63;border-bottom-width:0;border-top-width:0;border-left-width:0;border-right-width:0;color:#000;FONT-SIZE:20px;FONT-STYLE:normal;FONT-VARIANT:normal;FONT-WEIGHT:normal;HEIGHT:18px;LINE-HEIGHT:normal;resize:vertical;width:100%;max-width:500px;height:25%}.tagi{border-top-width:0;border-left-width:0;border-right-width:0}.s{width:100%;max-width:500px;text-align:left;margin:0 auto}a{color:grey}
