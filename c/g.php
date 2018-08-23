@@ -38,6 +38,9 @@ if(!empty($stamp)&&$_SESSION['log'] !== 'yes'){
 	}
 }else{
 	gnewstamp();
+	if($_SESSION['log'] == 'yes'){
+		$result['l']='yes';
+	}
 }
 /*Cache End*/
 function turndate($v) {
