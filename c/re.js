@@ -26,7 +26,7 @@ if (s[1] !== null && s[1] !== undefined && s[1] !== '') {
 } else {
 	window.location.href = m + '#m';
 }
-
+function purge(){localStorage.clear();}
 function checkurl() {
 	pagetype = 'normal';
 	var i = window.location.href;
