@@ -1,12 +1,4 @@
-var m = window.location.href;
-var s = m.split('#');
-var rh = m;
-var nowpage = 0;
-var pagetype = 'normal';
-var cpage = 1;
-var nextkey;
-var state = true;
-var x = new Array();
+var m = window.location.href,s = m.split('#'),rh = m,nowpage = 0,pagetype = 'normal',cpage = 1,nextkey,state = true,x = new Array();
 document.getElementById('l').style.display = 'none'; /*预加载页头页尾*/
 getp('header', 'h'); /*页头*/
 getp('footer', 'f'); /*页尾*/
@@ -54,7 +46,6 @@ setInterval(checkurl, 1000);
 function getp(page, e) {
 	var opg = page;
 	if (x[page] !== undefined && x[page] !== null) {
-		//console.log('Cached Page >3');
 		var apage = page.split('/');
 		if (apage[0] == 'm') {
 			if (apage[1] == null || apage[1] == '') {
@@ -242,5 +233,6 @@ function getmore() { /*加载更多-函数*/
 	}
 }
 setTimeout(function() {
-	//console.clear();
+	console.clear();
+	console.log('\n %c =3= OBottle  %c @SomeBottle 2018.8.24 \n\n','color:#484848;background:#ffffff;padding:5px 0;', 'color:#ffffff;background:#484848;padding:5px 0;');
 }, 1000);
