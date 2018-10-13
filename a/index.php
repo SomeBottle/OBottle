@@ -14,7 +14,7 @@ function grc($length){
 $salt=base64_encode(base64_encode(grc(64)).base64_encode(grc(64)).base64_encode(grc(64)).base64_encode(grc(64)).base64_encode(grc(64)));
 function fcrypt($s){
 	global $salt;
-	return sha1(crypt(sha1($s),$salt));
+	return sha1(crypt(sha1($s),sha1(base64_encode(md5(substr($s,0,6)))).$salt));
 }
 $request=@explode('?',$_SERVER['REQUEST_URI'])[1];
 if($_SESSION['log']!=='yes'){
@@ -27,7 +27,7 @@ if($request=='log'){
 		}
 	}else{
 		require_once './passport.php';
-		if($authid==sha1(crypt(sha1($_POST['auth']),$authsalt))){
+		if($authid==sha1(crypt(sha1($_POST['auth']),sha1(base64_encode(md5(substr($_POST['auth'],0,6)))).$authsalt))){
 			$_SESSION['log']='yes';
 			header('Location: edit.php');
 		}else{
