@@ -1,10 +1,10 @@
 <?php 
-$blog['name']='Bottle小站';/*小站名称*/
-$blog['intro']='测试简约小站~';/*小站描述*/
+$blog['name']='轻小站';/*小站名称*/
+$blog['intro']='简介~';/*小站描述*/
 $blog['frontposts']=7;
-$blog['avatar']='https://ww2.sinaimg.cn/large/ed039e1fgy1ft1plam1e5j2046046t94';
+$blog['avatar']='https://ww2.sinaimg.cn/large/ed039e1fgy1fwf3f2c11ij208c08cdfn';
 $blog['host']='http://localhost/';/*小站域名地址(末尾要带上/号)*/
-$blog['keyword']='SomeBottle,些瓶,小站';/*收录相关关键词，逗号间隔*/
-$blog['descript']='SomeBottle的小站';/*收录相关关键词，逗号间隔*/
+$blog['keyword']='小站,Github';/*收录相关关键词，逗号间隔*/
+$blog['descript']='轻小站';/*收录相关关键词，逗号间隔*/
 $blog['cachetime']=120;/*前端缓存时间，秒为单位*/
 ?>

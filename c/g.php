@@ -5,6 +5,7 @@ header('Content-type:text/json;charset=utf-8');
 session_start();
 require_once './f.php';
 require_once './md.php';
+$md = new Parsedown();
 $type = $_GET['type'];
 $page = $_POST['p'];
 $chsload = $_POST['load'];
@@ -232,7 +233,7 @@ if ($type == 'getpage') {
                     } else {
                         $c = preg_replace("/\t|\[editbar\]/", '', $c);
                     }
-                    $html = Markdown(htmlspecialchars_decode(stripslashes($pcontent)));
+                    $html = $md->text((htmlspecialchars_decode(stripslashes($pcontent))));
                     $c = preg_replace("/\t|\[content\]/", $html, $c);
                     $tagh = explode(',', $tag);
                     $taghs = '<div class=\'tagdiv\'><img src=\'./c/tag.png\' style=\'width:16px;\'></img>';
@@ -264,7 +265,7 @@ if ($type == 'getpage') {
                         } else {
                             $c = preg_replace("/\t|\[editbar\]/", '', $c);
                         }
-                        $html = Markdown(htmlspecialchars_decode(stripslashes($pcontent)));
+                        $html = $md->text((htmlspecialchars_decode(stripslashes($pcontent))));
                         $c = preg_replace("/\t|\[content\]/", $html, $c);
                         $kb = explode('[!page]', $c);
                         if ($ptype == 'page') {
