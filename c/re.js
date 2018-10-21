@@ -153,6 +153,10 @@ function g(page, e) {
             }
             setTimeout(function() {
                 $('#' + e).html(cache);
+				$('#' + e).animate({
+                    opacity: '1'
+                });
+                document.getElementById('l').style.display = 'none';
             },
             100);
             x[opg] = cache;
