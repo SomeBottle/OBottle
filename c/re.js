@@ -154,7 +154,7 @@ function g(page, e) {
             setTimeout(function() {
                 $('#' + e).html(cache);
             },
-            200);
+            100);
             x[opg] = cache;
             q('e', 'b' + opg, '', '', 1);
         }
