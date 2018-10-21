@@ -141,6 +141,23 @@ function g(page, e) {
         c.style.opacity = 0;
         var cache = q('r', 'b' + opg, '', '', '')['c'];
         var timestamp = q('r', 'b' + opg, '', '', '')['t'];
+        if (cache !== '' && cache !== undefined) {/*预读缓存*/
+            var apage = opg.split('/');
+            if (apage[0] == 'm') {
+                if (apage[1] == null || apage[1] == '') {
+                    np = 1;
+                } else {
+                    np = parseInt(apage[1]) + 1;
+                }
+                cpage += 1;
+            }
+            setTimeout(function() {
+                $('#' + e).html(cache);
+            },
+            200);
+            x[opg] = cache;
+            q('e', 'b' + opg, '', '', 1);
+        }
         $.ajax({
             type: "post",
             url: './c/g.php?type=getpage',
@@ -158,20 +175,7 @@ function g(page, e) {
                 }
                 data = datat;
                 if (data.result == 'ok') {
-                    if (data.cm == 'cache') {
-                        var apage = opg.split('/');
-                        if (apage[0] == 'm') {
-                            if (apage[1] == null || apage[1] == '') {
-                                np = 1;
-                            } else {
-                                np = parseInt(apage[1]) + 1;
-                            }
-                            cpage += 1;
-                        }
-                        $('#' + e).html(cache);
-                        x[opg] = cache;
-                        q('e', 'b' + opg, '', '', 1);
-                    } else {
+                    if (data.cm !== 'cache') {
                         x[opg] = data.r;
                         /*存入已加载区*/
                         if (data.l !== 'yes') {
