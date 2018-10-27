@@ -6,6 +6,7 @@ pt = 'normal',
 cpage = 1,
 nextkey,
 state = true,
+ver = '1.9.1',
 x = new Array();
 document.getElementById('l').style.display = 'none';
 /*预加载页头页尾*/
@@ -33,6 +34,10 @@ if (s[1] !== null && s[1] !== undefined && s[1] !== '') {
 }
 function purge() {
     localStorage.removeItem('obottle');
+}
+if (localStorage.obottlev == undefined || localStorage.obottlev !== ver) {
+    purge();
+    localStorage.obottlev = ver;
 }
 function q(md, k, c, t, rt) {
     /*(mode,key,content,timestamp,readtime)*/
@@ -141,7 +146,11 @@ function g(page, e) {
         c.style.opacity = 0;
         var cache = q('r', 'b' + opg, '', '', '')['c'];
         var timestamp = q('r', 'b' + opg, '', '', '')['t'];
-        if (cache !== '' && cache !== undefined) {/*预读缓存*/
+        var pca = cpage,
+        pnp = np;
+        /*backup values*/
+        if (cache !== '' && cache !== undefined) {
+            /*预读缓存*/
             var apage = opg.split('/');
             if (apage[0] == 'm') {
                 if (apage[1] == null || apage[1] == '') {
@@ -153,7 +162,7 @@ function g(page, e) {
             }
             setTimeout(function() {
                 $('#' + e).html(cache);
-				$('#' + e).animate({
+                $('#' + e).animate({
                     opacity: '1'
                 });
                 document.getElementById('l').style.display = 'none';
@@ -167,7 +176,7 @@ function g(page, e) {
             url: './c/g.php?type=getpage',
             data: {
                 p: page,
-                load: np,
+                load: pnp,
                 mode: pt,
                 ts: timestamp
             },
@@ -191,15 +200,15 @@ function g(page, e) {
                         }
                         if (page.indexOf('m') !== -1) {
                             allnum = data.allp;
-                            if ((Number(allnum) - 1) <= np) {
+                            if ((Number(allnum) - 1) <= pnp) {
                                 /*数组count比实际数量多1*/
                                 setTimeout(function() {
                                     $('#loadmore').remove();
                                 },
                                 10);
                             }
-                            cpage += 1;
-                            np += 1;
+                            cpage = pca + 1;
+                            np = pnp + 1;
                         }
                     }
                 } else {
@@ -296,6 +305,6 @@ function getmore() {
     }
 }
 setTimeout(function() {
-    console.log('\n %c =3= OBottle  %c @SomeBottle 2018.10.20 \n\n', 'color:#484848;background:#ffffff;padding:5px 0;', 'color:#ffffff;background:#484848;padding:5px 0;');
+    console.log('\n %c =3= OBottle  %c @SomeBottle 2018.10.27 \n\n', 'color:#484848;background:#ffffff;padding:5px 0;', 'color:#ffffff;background:#484848;padding:5px 0;');
 },
 1000);
