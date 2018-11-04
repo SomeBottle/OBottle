@@ -43,7 +43,6 @@ $.ht = function(h, e) {
     for (var o = 0; o < os.length; o++) {
         scr = scr + os[o].innerHTML;
         if (os[o].src !== undefined && os[o].src !== null && os[o].src !== '') {
-            console.log(os[o].src);
             loadscript(os[o].src);
         }
     }
