@@ -7,7 +7,7 @@
 	  <meta name="description" content="<?php echo descript();?>" />
 	  <meta name="keywords" content="<?php echo keyword();?>" />
 	  <link href="./c/m.css" rel="stylesheet">
-      <script src="./c/jquery.min.js"></script>
+      <script src="./c/q.js"></script>
 	</head>
 </html>
 <body>
@@ -18,4 +18,4 @@
 <div id='f'></div>
 </div>
 </body>
-<script src="./c/re.js"></script>
+<script src="./c/re.js?1104"></script>

@@ -121,10 +121,8 @@ function g(page, e) {
         }
         var c = document.getElementById(e);
         c.style.opacity = 0;
-        $('#' + e).html(x[page]);
-        $('#' + e).animate({
-            opacity: '1'
-        });
+        $.ht(x[page], e);
+        $.op(1, e);
     } else {
         /*预载入页码*/
         var cswitch = false;
@@ -161,26 +159,21 @@ function g(page, e) {
                 cpage += 1;
             }
             setTimeout(function() {
-                $('#' + e).html(cache);
-                $('#' + e).animate({
-                    opacity: '1'
-                });
+                $.ht(cache, e);
+                $.op(1, e);
                 document.getElementById('l').style.display = 'none';
             },
             100);
             x[opg] = cache;
             q('e', 'b' + opg, '', '', 1);
         }
-        $.ajax({
-            type: "post",
-            url: './c/g.php?type=getpage',
-            data: {
-                p: page,
-                load: pnp,
-                mode: pt,
-                ts: timestamp
-            },
-            dataType: "text",
+        $.aj('./c/g.php?type=getpage', {
+            p: page,
+            load: pnp,
+            mode: pt,
+            ts: timestamp
+        },
+        {
             success: function(msg) {
                 var datat = '';
                 if (msg != '') {
@@ -194,16 +187,16 @@ function g(page, e) {
                         if (data.l !== 'yes') {
                             q('w', 'b' + opg, data.r, data.ca, '');
                         }
-                        $('#' + e).html(data.r);
+                        $.ht(data.r, e);
                         if (data.r.match(/^[ ]+$/)) {
-                            $('#' + e).html('<center><h2 style=\'color:#AAA;\'>QAQ 404</h2></center>');
+                            $.ht('<center><h2 style=\'color:#AAA;\'>QAQ 404</h2></center>', e);
                         }
                         if (page.indexOf('m') !== -1) {
                             allnum = data.allp;
                             if ((Number(allnum) - 1) <= pnp) {
                                 /*数组count比实际数量多1*/
                                 setTimeout(function() {
-                                    $('#loadmore').remove();
+                                    $.rm('loadmore');
                                 },
                                 10);
                             }
@@ -212,16 +205,14 @@ function g(page, e) {
                         }
                     }
                 } else {
-                    $('#' + e).html('<center><h2 style=\'color:#AAA;\'>' + data.msg + '</h2></center>');
+                    $.ht('<center><h2 style=\'color:#AAA;\'>' + data.msg + '</h2></center>', e);
                 }
-                $('#' + e).animate({
-                    opacity: '1'
-                });
+                $.op(1, e);
                 document.getElementById('l').style.display = 'none';
                 state = true;
             },
-            error: function(msg) {
-                $('#' + e).html('<center><h2 style=\'color:#AAA;\'>失去连接~OAO</h2></center>');
+            failed: function(msg) {
+                $.ht('<center><h2 style=\'color:#AAA;\'>失去连接~OAO</h2></center>', e);
                 state = true;
             }
         });
@@ -232,29 +223,24 @@ function getmore() {
     var cp = np;
     if (cpage < 3) {
         /*自动换页*/
-        $('#loadmore').remove();
+        $.rm('loadmore');
         var e = 'c';
         var c = document.getElementById(e);
         c.style.opacity = 0;
         if (x['m' + np] !== undefined && x['m' + np] !== null) {
-            $('#' + e).html($('#' + e).html() + x['m' + np]);
-            $('#' + e).animate({
-                opacity: '1'
-            });
+            $.ht(SC(e).innerHTML + x['m' + np], e);
+            $.op(1, e);
             np += 1;
             cpage += 1;
         } else {
             document.getElementById('l').style.display = 'block';
             var cache = q('r', 'b' + cp, '', '', '')['c'];
             var timestamp = q('r', 'b' + cp, '', '', '')['t'];
-            $.ajax({
-                type: "post",
-                url: './c/g.php?type=getmore',
-                data: {
-                    load: np,
-                    ts: timestamp
-                },
-                dataType: "text",
+            $.aj('./c/g.php?type=getmore', {
+                load: np,
+                ts: timestamp
+            },
+            {
                 success: function(msg) {
                     var datat = '';
                     if (msg != '') {
@@ -263,7 +249,7 @@ function getmore() {
                     data = datat;
                     if (data.result == 'ok') {
                         if (data.cm == 'cache') {
-                            $('#' + e).html($('#' + e).html() + cache);
+                            $.ht(SC(e).innerHTML + cache, e);
                             x['m' + cp] = cache;
                             q('e', 'b' + cp, '', '', 1);
                             np += 1;
@@ -272,13 +258,13 @@ function getmore() {
                             allnum = data.allp;
                             if ((Number(allnum) - 1) <= np) {
                                 /*数组count比实际数量多1*/
-                                data.r = data.r + '<script>setTimeout(function(){$(\'#loadmore\').remove();},10);</script>';
+                                data.r = data.r + '<script>setTimeout(function(){$.rm(\'loadmore\');},10);</script>';
                                 console.log('No more.');
                             } else {
                                 np += 1;
                             }
                             cpage += 1;
-                            $('#' + e).html($('#' + e).html() + data.r);
+                            $.ht(SC(e).innerHTML + data.r, e);
                             x['m' + cp] = data.r;
                             if (data.l !== 'yes') {
                                 q('w', 'b' + cp, data.r, data.ca, '');
@@ -287,13 +273,11 @@ function getmore() {
                     } else {
                         document.getElementById(e).innerHTML = document.getElementById(e).innerHTML + '<center><h2 style=\'color:#AAA;\'>' + data.msg + '</h2></center>';
                     }
-                    $('#' + e).animate({
-                        opacity: '1'
-                    });
+                    $.op(1, e);
                     document.getElementById('l').style.display = 'none';
                     state = true;
                 },
-                error: function(msg) {
+                failed: function(msg) {
                     alert('加载失败');
                     state = true;
                 }
