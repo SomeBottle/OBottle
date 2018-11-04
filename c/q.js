@@ -1,35 +1,32 @@
 /*Scripts For Request - SomeBottle*/
 var $ = new Object();
+$.ls = new Array();
 var SC = function(e) {
     return document.getElementById(e);
 }
-function loadscript(url, callback) {
+function loadscript(url) {
     var script = document.createElement("script");
-    script.type = "text/javascript";
-    if (typeof(callback) != "undefined") {
-        if (script.readyState) {
-            script.onreadystatechange = function() {
-                if (script.readyState == "loaded" || script.readyState == "complete") {
-                    script.onreadystatechange = null;
-                    callback();
-                }
-            };
-        } else {
-            script.onload = function() {
-                callback();
-            };
+    var exist = false;
+    for (var up in $.ls) {
+        if ($.ls[up] == url) {
+            exist = true;
+            break;
         }
     }
-    script.src = url;
-    document.body.appendChild(script);
+    if (!exist) {
+        $.ls[$.ls.length] = url;
+        script.type = "text/javascript";
+        script.src = url;
+        document.body.appendChild(script);
+    }
 }
 $.op = function(v, e) {
     ht = SC(e);
     if (Number(v) == 1) {
-		ht.style.transition = '0.5s ease';
+        ht.style.transition = '0.5s ease';
         ht.style.opacity = '1';
     } else {
-		ht.style.transition = 'none';
+        ht.style.transition = 'none';
         ht.style.opacity = '0';
     }
 }
