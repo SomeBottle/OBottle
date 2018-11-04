@@ -119,8 +119,7 @@ function g(page, e) {
             }
             cpage += 1;
         }
-        var c = document.getElementById(e);
-        c.style.opacity = 0;
+        $.op(0, e);
         $.ht(x[page], e);
         $.op(1, e);
     } else {
@@ -140,8 +139,7 @@ function g(page, e) {
             }
         }
         document.getElementById('l').style.display = 'block';
-        var c = document.getElementById(e);
-        c.style.opacity = 0;
+        $.op(0, e);
         var cache = q('r', 'b' + opg, '', '', '')['c'];
         var timestamp = q('r', 'b' + opg, '', '', '')['t'];
         var pca = cpage,
@@ -226,7 +224,7 @@ function getmore() {
         $.rm('loadmore');
         var e = 'c';
         var c = document.getElementById(e);
-        c.style.opacity = 0;
+        $.op(0, e);
         if (x['m' + np] !== undefined && x['m' + np] !== null) {
             $.ht(SC(e).innerHTML + x['m' + np], e);
             $.op(1, e);

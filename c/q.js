@@ -25,10 +25,11 @@ function loadscript(url, callback) {
 }
 $.op = function(v, e) {
     ht = SC(e);
-    ht.style.transition = '0.5s ease';
     if (Number(v) == 1) {
+		ht.style.transition = '0.5s ease';
         ht.style.opacity = '1';
     } else {
+		ht.style.transition = 'none';
         ht.style.opacity = '0';
     }
 }
