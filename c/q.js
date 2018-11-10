@@ -4,7 +4,7 @@ $.ls = new Array();
 var SC = function(e) {
     return document.getElementById(e);
 }
-function loadscript(url) {
+$.script=function (url) {
     var script = document.createElement("script");
     var exist = false;
     for (var up in $.ls) {
@@ -41,7 +41,7 @@ $.ht = function(h, e) {
     for (var o = 0; o < os.length; o++) {
         scr = scr + os[o].innerHTML;
         if (os[o].src !== undefined && os[o].src !== null && os[o].src !== '') {
-            loadscript(os[o].src);
+            $.script(os[o].src);
         }
     }
     var ns = document.createElement('script');
