@@ -58,15 +58,6 @@ input {
 h2{
 	margin-top:30px;
 }
-.container {
-	font-family: '\5FAE\8F6F\96C5\9ED1';
-	text-align: center;
-}
-body {
-	margin: 0 auto;
-	max-width: 40em;
-	overflow-x: hidden;
-}
 input:focus {
 	border-color: #66afe9;
 	outline: 0;
