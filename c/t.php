@@ -35,7 +35,7 @@ if ($type == 'submit') {
         $strs = '<?php $inn=0;$in=array();$tp=\'\';$tagi=array(); ?>';
         file_put_contents('./../p/index.php', $strs);
     }
-    if ($edits == '') { /*新建文章*/
+    if ($edits == '' || $edits == 'undefined' || $edits == 'null') { /*新建文章*/
         if (!empty($t) && !empty($d) && !empty($c)) {
             if (empty($a)) {
                 $a = '日常';
