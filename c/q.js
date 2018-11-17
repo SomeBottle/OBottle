@@ -58,6 +58,7 @@ $.aj = function(p, d, sf , m) {
     for (var ap in d) {
         hm = hm + ap + '=' + d[ap] + '&';
     }
+	hm=hm.substring(0,hm.length-1);
     xhr.open('post', p, true);
 	if(m!=='multipart/form-data'){
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");

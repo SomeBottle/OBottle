@@ -14,7 +14,7 @@ session_write_close();
 require_once './f.php';
 $type = $_GET['type'];
 $t = $_POST['title'];
-$c = $_POST['content'];
+$c = urldecode($_POST['content']);
 $d = $_POST['dat'];
 $a = $_POST['tag'];
 $edits = $_POST['editn'];

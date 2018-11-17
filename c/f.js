@@ -105,6 +105,7 @@ function submits() {
     }
     if (confirm('你真的要发布/编辑嘛O_o')) {
         $.ht('正在发布', 'zt');
+		c=encodeURIComponent(c);
         $.aj('./../c/t.php?type=submit', {
             title: t,
             content: c,
