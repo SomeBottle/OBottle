@@ -51,21 +51,25 @@ $.ht = function(h, e) {
         os[o].parentNode.removeChild(os[o]);
     }
 }
-$.aj = function(p, d, sf) {
-    /*(path,data,success or fail)*/
+$.aj = function(p, d, sf , m) {
+    /*(path,data,success or fail,method)*/
     var xhr = new XMLHttpRequest();
     var hm = '';
     for (var ap in d) {
         hm = hm + ap + '=' + d[ap] + '&';
     }
     xhr.open('post', p, true);
-    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhr.send(hm);
+	if(m!=='multipart/form-data'){
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xhr.send(hm);
+	}else{
+        xhr.send(d);
+	}
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             sf.success(xhr.responseText);
         } else if (xhr.readyState == 4 && xhr.status !== 200) {
-            sf.failed();
+            sf.failed(xhr.status);
         }
     };
 }

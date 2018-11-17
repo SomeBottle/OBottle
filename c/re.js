@@ -213,7 +213,8 @@ function g(page, e) {
                 $.ht('<center><h2 style=\'color:#AAA;\'>失去连接~OAO</h2></center>', e);
                 state = true;
             }
-        });
+        },
+        '');
     }
 }
 function getmore() {
@@ -279,7 +280,8 @@ function getmore() {
                     alert('加载失败');
                     state = true;
                 }
-            });
+            },
+            '');
         }
     } else {
         cpage = 0;
@@ -287,6 +289,6 @@ function getmore() {
     }
 }
 setTimeout(function() {
-    console.log('\n %c =3= OBottle  %c @SomeBottle 2018.11.10 \n\n', 'color:#484848;background:#ffffff;padding:5px 0;', 'color:#ffffff;background:#484848;padding:5px 0;');
+    console.log('\n %c =3= OBottle  %c @SomeBottle 2018.11.17 \n\n', 'color:#484848;background:#ffffff;padding:5px 0;', 'color:#ffffff;background:#484848;padding:5px 0;');
 },
 1000);
