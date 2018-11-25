@@ -23,8 +23,10 @@ $.script = function(url) {
 $.tr = function(url) {
     var a = url;
     a = a.split('?');
-    if ((a.length - 1) > 1) {
-        a.pop();
+    if ((a.length - 1) > 1 || url.indexOf('!') !== -1) {
+        if (url.indexOf('?') !== -1) {
+            a.pop();
+        }
     }
     var u = '';
     for (var i in a) {
