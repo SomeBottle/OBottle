@@ -8,7 +8,6 @@ nextkey,
 state = true,
 ver = '1.9.1',
 x = new Array();
-console.log(m);
 document.getElementById('l').style.display = 'none';
 /*预加载页头页尾*/
 g('header', 'h');

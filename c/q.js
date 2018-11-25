@@ -1,6 +1,8 @@
 /*Scripts For Request - SomeBottle*/
 var $ = new Object();
 $.ls = new Array();
+$.lss = '';
+$.hash = window.location.href;
 var SC = function(e) {
     return document.getElementById(e);
 }
@@ -59,12 +61,19 @@ $.ht = function(h, e) {
             $.script(os[o].src);
         }
     }
-    var ns = document.createElement('script');
-    ns.innerHTML = scr;
-    ht.appendChild(ns);
-    for (var o = 0; o < os.length; o++) {
-        os[o].parentNode.removeChild(os[o]);
-    }
+    setTimeout(function() {
+        if ($.lss !== scr || $.hash !== window.location.href) {
+            var ns = document.createElement('script');
+            ns.innerHTML = scr;
+            $.lss = scr;
+            $.hash = window.location.href;
+            ht.appendChild(ns);
+            for (var o = 0; o < os.length; o++) {
+                os[o].parentNode.removeChild(os[o]);
+            }
+        }
+    },
+    500);
 }
 $.aj = function(p, d, sf, m) {
     /*(path,data,success or fail,method)*/
