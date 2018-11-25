@@ -4,7 +4,7 @@ $.ls = new Array();
 var SC = function(e) {
     return document.getElementById(e);
 }
-$.script=function (url) {
+$.script = function(url) {
     var script = document.createElement("script");
     var exist = false;
     for (var up in $.ls) {
@@ -19,6 +19,19 @@ $.script=function (url) {
         script.src = url;
         document.body.appendChild(script);
     }
+}
+$.tr = function(url) {
+    var a = url;
+    a = a.split('?');
+    if ((a.length - 1) > 1) {
+        a.pop();
+    }
+    var u = '';
+    for (var i in a) {
+        u = u + a[i] + '?';
+    }
+    u = u.substring(0, u.length - 1);
+    return u;
 }
 $.op = function(v, e) {
     ht = SC(e);
@@ -51,21 +64,21 @@ $.ht = function(h, e) {
         os[o].parentNode.removeChild(os[o]);
     }
 }
-$.aj = function(p, d, sf , m) {
+$.aj = function(p, d, sf, m) {
     /*(path,data,success or fail,method)*/
     var xhr = new XMLHttpRequest();
     var hm = '';
     for (var ap in d) {
         hm = hm + ap + '=' + d[ap] + '&';
     }
-	hm=hm.substring(0,hm.length-1);
+    hm = hm.substring(0, hm.length - 1);
     xhr.open('post', p, true);
-	if(m!=='multipart/form-data'){
+    if (m !== 'multipart/form-data') {
         xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
         xhr.send(hm);
-	}else{
+    } else {
         xhr.send(d);
-	}
+    }
     xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
             sf.success(xhr.responseText);

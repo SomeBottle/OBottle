@@ -1,4 +1,4 @@
-var m = window.location.href,
+var m = $.tr(window.location.href),
 s = m.split('#'),
 rh = m,
 np = 0,
@@ -8,6 +8,7 @@ nextkey,
 state = true,
 ver = '1.9.1',
 x = new Array();
+console.log(m);
 document.getElementById('l').style.display = 'none';
 /*预加载页头页尾*/
 g('header', 'h');
@@ -84,7 +85,7 @@ function q(md, k, c, t, rt) {
 }
 function cu() {
     pt = 'normal';
-    var i = window.location.href;
+    var i = $.tr(window.location.href);
     if (i !== rh) {
         state = false;
         rh = i;
@@ -289,6 +290,6 @@ function getmore() {
     }
 }
 setTimeout(function() {
-    console.log('\n %c =3= OBottle  %c @SomeBottle 2018.11.17 \n\n', 'color:#484848;background:#ffffff;padding:5px 0;', 'color:#ffffff;background:#484848;padding:5px 0;');
+    console.log('\n %c =3= OBottle  %c @SomeBottle 2018.11.25 \n\n', 'color:#484848;background:#ffffff;padding:5px 0;', 'color:#ffffff;background:#484848;padding:5px 0;');
 },
 1000);
