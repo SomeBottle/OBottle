@@ -103,12 +103,14 @@ function cu() {
         g(t[1], 'c');
     }
 }
-onhashchange = function() {
+window.onhashchange = function() {
     cu();
 };
 setInterval(cu, 1000);
 function g(page, e) {
     var opg = page;
+    var nhash = rh;
+    /*标识加载page时的hash*/
     if (x[page] !== undefined && x[page] !== null) {
         var apage = page.split('/');
         if (apage[0] == 'm') {
@@ -173,40 +175,43 @@ function g(page, e) {
         },
         {
             success: function(msg) {
-                var datat = '';
-                if (msg != '') {
-                    datat = eval("(" + msg + ")");
-                }
-                data = datat;
-                if (data.result == 'ok') {
-                    if (data.cm !== 'cache') {
-                        x[opg] = data.r;
-                        /*存入已加载区*/
-                        if (data.l !== 'yes') {
-                            q('w', 'b' + opg, data.r, data.ca, '');
-                        }
-                        $.ht(data.r, e);
-                        if (data.r.match(/^[ ]+$/)) {
-                            $.ht('<center><h2 style=\'color:#AAA;\'>QAQ 404</h2></center>', e);
-                        }
-                        if (page.indexOf('m') !== -1) {
-                            allnum = data.allp;
-                            if ((Number(allnum) - 1) <= pnp) {
-                                /*数组count比实际数量多1*/
-                                setTimeout(function() {
-                                    $.rm('loadmore');
-                                },
-                                10);
-                            }
-                            cpage = pca + 1;
-                            np = pnp + 1;
-                        }
+                if (
+                if ($.chash(nhash)) {
+                    var datat = '';
+                    if (msg != '') {
+                        datat = eval("(" + msg + ")");
                     }
-                } else {
-                    $.ht('<center><h2 style=\'color:#AAA;\'>' + data.msg + '</h2></center>', e);
+                    data = datat;
+                    if (data.result == 'ok') {
+                        if (data.cm !== 'cache') {
+                            x[opg] = data.r;
+                            /*存入已加载区*/
+                            if (data.l !== 'yes') {
+                                q('w', 'b' + opg, data.r, data.ca, '');
+                            }
+                            $.ht(data.r, e);
+                            if (data.r.match(/^[ ]+$/)) {
+                                $.ht('<center><h2 style=\'color:#AAA;\'>QAQ 404</h2></center>', e);
+                            }
+                            if (page.indexOf('m') !== -1) {
+                                allnum = data.allp;
+                                if ((Number(allnum) - 1) <= pnp) {
+                                    /*数组count比实际数量多1*/
+                                    setTimeout(function() {
+                                        $.rm('loadmore');
+                                    },
+                                    10);
+                                }
+                                cpage = pca + 1;
+                                np = pnp + 1;
+                            }
+                        }
+                    } else {
+                        $.ht('<center><h2 style=\'color:#AAA;\'>' + data.msg + '</h2></center>', e);
+                    }
+                    $.op(1, e);
+                    document.getElementById('l').style.display = 'none';
                 }
-                $.op(1, e);
-                document.getElementById('l').style.display = 'none';
                 state = true;
             },
             failed: function(msg) {
@@ -289,6 +294,6 @@ function getmore() {
     }
 }
 setTimeout(function() {
-    console.log('\n %c =3= OBottle  %c @SomeBottle 2018.11.25 \n\n', 'color:#484848;background:#ffffff;padding:5px 0;', 'color:#ffffff;background:#484848;padding:5px 0;');
+    console.log('\n %c =3= OBottle  %c @SomeBottle 2019.1.19 \n\n', 'color:#484848;background:#ffffff;padding:5px 0;', 'color:#ffffff;background:#484848;padding:5px 0;');
 },
 1000);

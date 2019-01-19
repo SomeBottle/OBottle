@@ -6,6 +6,14 @@ $.hash = window.location.href;
 var SC = function(e) {
     return document.getElementById(e);
 }
+$.chash = function(h) {
+    /*校验hash*/
+    if ($.tr(window.location.href) == h) {
+        return true;
+    } else {
+        return false;
+    }
+}
 $.script = function(url) {
     var script = document.createElement("script");
     var exist = false;
