@@ -175,7 +175,6 @@ function g(page, e) {
         },
         {
             success: function(msg) {
-                if (
                 if ($.chash(nhash)) {
                     var datat = '';
                     if (msg != '') {
@@ -218,8 +217,7 @@ function g(page, e) {
                 $.ht('<center><h2 style=\'color:#AAA;\'>失去连接~OAO</h2></center>', e);
                 state = true;
             }
-        },
-        '');
+        })
     }
 }
 function getmore() {
