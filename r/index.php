@@ -10,8 +10,8 @@ foreach($in as $p=>$pt){
 	if($s<=$limit){
 		require './../p/'.$p.'.php';
 		$ts=strtotime($pt);
-		$dt=date('Y-m-d',$ts);
-		$ht=$ht.'<item><title><![CDATA['.$ptitle.'-'.name().']]></title><link>'.host().'#!'.$p.'</link><category>'.$tag.'</category><description><![CDATA['.$pcontent.']]></description></item>';
+		$dt=date('D d M Y',$ts);
+		$ht=$ht.'<item><title><![CDATA['.$ptitle.'-'.name().']]></title><pubDate>'.$dt.'</pubDate><link>'.host().'#!'.$p.'</link><category>'.$tag.'</category><description><![CDATA['.$pcontent.']]></description></item>';
 	}else{
 		break;
 	}
