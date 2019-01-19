@@ -2,6 +2,8 @@
 header('Content-type: application/rss+xml;charset=utf-8');
 require './../p/index.php';
 require './../c/f.php';
+require './../c/md.php';
+$md = new Parsedown();
 date_default_timezone_set("Asia/Shanghai");
 $limit=15;
 $s=1;
@@ -11,7 +13,7 @@ foreach($in as $p=>$pt){
 		require './../p/'.$p.'.php';
 		$ts=strtotime($pt);
 		$dt=date('D d M Y',$ts);
-		$ht=$ht.'<item><title><![CDATA['.$ptitle.'-'.name().']]></title><pubDate>'.$dt.'</pubDate><link>'.host().'#!'.$p.'</link><category>'.$tag.'</category><description><![CDATA['.$pcontent.']]></description></item>';
+		$ht=$ht.'<item><title><![CDATA['.$ptitle.'-'.name().']]></title><pubDate>'.$dt.'</pubDate><link>'.host().'#!'.$p.'</link><category>'.$tag.'</category><description><![CDATA['.$md->text((htmlspecialchars_decode(stripslashes($pcontent)))).']]></description></item>';
 	}else{
 		break;
 	}
