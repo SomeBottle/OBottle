@@ -143,12 +143,14 @@ function g(page, e) {
         document.getElementById('l').style.display = 'block';
         $.op(0, e);
         var cache = q('r', 'b' + opg, '', '', '')['c'];
+		var usecache=false;
         var timestamp = q('r', 'b' + opg, '', '', '')['t'];
         var pca = cpage,
         pnp = np;
         /*backup values*/
         if (cache !== '' && cache !== undefined) {
             /*预读缓存*/
+			usecache=true;
             var apage = opg.split('/');
             if (apage[0] == 'm') {
                 if (apage[1] == null || apage[1] == '') {
@@ -214,7 +216,9 @@ function g(page, e) {
                 state = true;
             },
             failed: function(msg) {
+				if(!usecache){
                 $.ht('<center><h2 style=\'color:#AAA;\'>失去连接~OAO</h2></center>', e);
+				}
                 state = true;
             }
         })
@@ -292,6 +296,6 @@ function getmore() {
     }
 }
 setTimeout(function() {
-    console.log('\n %c =3= OBottle  %c @SomeBottle 2019.1.19 \n\n', 'color:#484848;background:#ffffff;padding:5px 0;', 'color:#ffffff;background:#484848;padding:5px 0;');
+    console.log('\n %c =3= OBottle  %c @SomeBottle 2019.1.20 \n\n', 'color:#484848;background:#ffffff;padding:5px 0;', 'color:#ffffff;background:#484848;padding:5px 0;');
 },
 1000);
