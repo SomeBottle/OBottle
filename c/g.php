@@ -52,16 +52,16 @@ if ($type == 'getpage') {
         if (file_exists('./../t/' . $page . '.php') || stripos($page, 'tag') !== false) {
             $request = explode('/', $page);
             $c = file_get_contents('./../t/' . $request[0] . '.php');
+			preg_match('/\[rand:(.*?)\]/i', $c, $match);
+			$range=explode('-',$match[1]);
+			$rg1=$range[0];
+			$rg2=$range[1];
+            $c = preg_replace('/\[rand:(.*?)\]/i',rand($rg1,$rg2), $c); /*最先替换随机数*/
             $c = preg_replace("/\t|\[name\]/", name(), $c); /*替换小站名*/
             $c = preg_replace("/\t|\[intro\]/", intro(), $c); /*替换小站描述*/
             $c = preg_replace("/\t|\[year\]/", date('Y'), $c); /*替换小站年份*/
             $c = preg_replace("/\t|\[avatar\]/", avatar(), $c); /*替换小站头像*/
             $c = preg_replace("/\t|\[host\]/", host(), $c); /*替换小站链接*/
-			preg_match('/\[rand:(.*?)\]/i', $c, $match);
-			$range=explode('-',$match[1]);
-			$rg1=$range[0];
-			$rg2=$range[1];
-            $c = preg_replace('/\[rand:(.*?)\]/i',rand($rg1,$rg2), $c); /*替换随机数*/
             preg_match('/\[css:(.*?)\]/i', $c, $match);
             $c = preg_replace('/\[css:(.*?)\]/i', './t/' . $match[1], $c); /*替换CSS路径*/
             preg_match('/\[js:(.*?)\]/i', $c, $match2);
