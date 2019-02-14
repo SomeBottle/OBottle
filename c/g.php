@@ -14,36 +14,55 @@ $stamp=$_POST['ts'];
 $result['result'] = 'ok';
 $result['cm']='normal';
 if (empty($chsload)) {
-    $chsload = 0;
+	$chsload = 0;
 }
 /*Cache*/
 function gnewstamp(){
 	$tstamp=time();
-    $GLOBALS['mdback']=$type.':'.$page.':'.$chsload.':'.$mode.':'.$tstamp;
+	$GLOBALS['mdback']=$type.':'.$page.':'.$chsload.':'.$mode.':'.$tstamp;
 }
 $ci=ctime();
 if(!empty($stamp)&&$_SESSION['log'] !== 'yes'){
 	$stampa=explode(':',$stamp);
 	$stampv=intval($stampa[4]);
 	if(getchangetime()=='nolog'||getchangetime()<=$stampv){
-	if((time()-$stampv)<=$ci){
-		$result['result']='ok';
-		$result['cm']='cache';
-		echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-		exit();
-	}else{
+		if((time()-$stampv)<=$ci){
+			$result['result']='ok';
+			$result['cm']='cache';
+			echo json_encode($result, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+			exit();
+		} else{
+			gnewstamp();
+		}
+	} else{
 		gnewstamp();
 	}
-	}else{
-		gnewstamp();
-	}
-}else{
+} else{
 	gnewstamp();
 	if($_SESSION['log'] == 'yes'){
 		$result['l']='yes';
 	}
 }
 /*Cache End*/
+/*Template Function*/
+function replace($cp,$tp){
+	$val='';
+	$rt=$cp;
+	while(stripos($rt,'['.$tp.':')){
+		if($tp=='rand'){
+			preg_match('/[rand:(.*?)]/i', $rt, $match);
+			$range=explode('-',$match[1]);
+			$rg1=$range[0];
+			$rg2=$range[1];
+			$rt = preg_replace('/[rand:(.*?)]/i',rand($rg1,$rg2),$rt,1);
+			/*最先替换随机数*/
+		} else if($tp=='js'||$tp=='css'){
+			preg_match('/['.$tp.':(.*?)]/i', $rt, $match);
+            $rt = preg_replace('/['.$tp.':(.*?)]/i', './t/' . $match[1],$rt,1); /*替换CSS路径*/
+		}
+	}
+	return $rt;
+}
 function turndate($v) {
     return substr($v, 0, 4) . "-" . substr($v, 4, 2) . "-" . substr($v, 6, 2);
 }
@@ -52,20 +71,14 @@ if ($type == 'getpage') {
         if (file_exists('./../t/' . $page . '.php') || stripos($page, 'tag') !== false) {
             $request = explode('/', $page);
             $c = file_get_contents('./../t/' . $request[0] . '.php');
-			preg_match('/\[rand:(.*?)\]/i', $c, $match);
-			$range=explode('-',$match[1]);
-			$rg1=$range[0];
-			$rg2=$range[1];
-            $c = preg_replace('/\[rand:(.*?)\]/i',rand($rg1,$rg2), $c); /*最先替换随机数*/
-            $c = preg_replace("/\t|\[name\]/", name(), $c); /*替换小站名*/
-            $c = preg_replace("/\t|\[intro\]/", intro(), $c); /*替换小站描述*/
-            $c = preg_replace("/\t|\[year\]/", date('Y'), $c); /*替换小站年份*/
-            $c = preg_replace("/\t|\[avatar\]/", avatar(), $c); /*替换小站头像*/
-            $c = preg_replace("/\t|\[host\]/", host(), $c); /*替换小站链接*/
-            preg_match('/\[css:(.*?)\]/i', $c, $match);
-            $c = preg_replace('/\[css:(.*?)\]/i', './t/' . $match[1], $c); /*替换CSS路径*/
-            preg_match('/\[js:(.*?)\]/i', $c, $match2);
-            $c = preg_replace('/\[js:(.*?)\]/i', './t/' . $match2[1], $c); /*替换JS路径*/
+			$c = replace($c,'rand');
+            $c = preg_replace("/t|[name]/", name(), $c); /*替换小站名*/
+            $c = preg_replace("/t|[intro]/", intro(), $c); /*替换小站描述*/
+            $c = preg_replace("/t|[year]/", date('Y'), $c); /*替换小站年份*/
+            $c = preg_replace("/t|[avatar]/", avatar(), $c); /*替换小站头像*/
+            $c = preg_replace("/t|[host]/", host(), $c); /*替换小站链接*/
+            $c = replace($c,'css');
+			$c = replace($c,'js');
             if ($page == 'm') { /*生成文章列表*/
                 $poststr = '';
                 if (file_exists('./../p/index.php')) {
@@ -85,10 +98,10 @@ if ($type == 'getpage') {
                         if ($val !== '') {
                             $k = file_get_contents('./../t/posts.html');
                             require './../p/' . $val . '.php';
-                            $k = preg_replace("/\t|\[index\]/", '>', $k);
-                            $k = preg_replace("/\t|\[title\]/", $ptitle, $k);
-                            $k = preg_replace("/\t|\[date\]/", '[置顶]', $k);
-                            $k = preg_replace("/\t|\[link\]/", '#!' . $val, $k);
+                            $k = preg_replace("/t|[index]/", '>', $k);
+                            $k = preg_replace("/t|[title]/", $ptitle, $k);
+                            $k = preg_replace("/t|[date]/", '[置顶]', $k);
+                            $k = preg_replace("/t|[link]/", '#!' . $val, $k);
                             $poststr = $poststr . $k;
                         }
                     }
@@ -113,22 +126,22 @@ if ($type == 'getpage') {
                             if (!in_array(intval($key), $tops, true)) { /*排除置顶文章*/
                                 $tp = file_get_contents('./../t/posts.html');
                                 require './../p/' . $key . '.php';
-                                $tp = preg_replace("/\t|\[index\]/", $ids . '.', $tp);
-                                $tp = preg_replace("/\t|\[title\]/", $ptitle, $tp);
+                                $tp = preg_replace("/t|[index]/", $ids . '.', $tp);
+                                $tp = preg_replace("/t|[title]/", $ptitle, $tp);
                                 if ($ptype == 'post') {
-                                    $tp = preg_replace("/\t|\[date\]/", turndate($val), $tp);
+                                    $tp = preg_replace("/t|[date]/", turndate($val), $tp);
                                 } else if ($ptype == 'page') {
-                                    $tp = preg_replace("/\t|\[date\]/", '[页面]', $tp);
+                                    $tp = preg_replace("/t|[date]/", '[页面]', $tp);
                                 }
-                                $tp = preg_replace("/\t|\[link\]/", '#!' . $key, $tp);
+                                $tp = preg_replace("/t|[link]/", '#!' . $key, $tp);
                                 $poststr = $poststr . $tp;
                                 $ids+= 1;
                             }
                         }
                         if (empty($poststr)) {
-                            $poststr = '<center><h3 style=\'color:#AAA;\'>这里没有东西哦~</h3></center>';
+                            $poststr = '<center><h3 style='color:#AAA;'>这里没有东西哦~</h3></center>';
                         }
-                        $c = preg_replace("/\t|\[posts\]/", $poststr, $c); /*替换文章html*/
+                        $c = preg_replace("/t|[posts]/", $poststr, $c); /*替换文章html*/
                     } else {
                         $result['result'] = 'notok';
                         $result['msg'] = '这里没有任何文章呢O_o.';
@@ -160,14 +173,14 @@ if ($type == 'getpage') {
                         $ids = 1;
                         foreach ($tags as $k => $t) {
                             $ia = file_get_contents('./../t/tags.html');
-                            $ia = preg_replace("/\t|\[index\]/", $ids . '.', $ia);
-                            $ia = preg_replace("/\t|\[tag\]/", $k, $ia);
-                            $ia = preg_replace("/\t|\[num\]/", $t . '篇文章', $ia);
-                            $ia = preg_replace("/\t|\[link\]/", '#tag/' . $k, $ia);
+                            $ia = preg_replace("/t|[index]/", $ids . '.', $ia);
+                            $ia = preg_replace("/t|[tag]/", $k, $ia);
+                            $ia = preg_replace("/t|[num]/", $t . '篇文章', $ia);
+                            $ia = preg_replace("/t|[link]/", '#tag/' . $k, $ia);
                             $str = $str . $ia;
                             $ids+= 1;
                         }
-                        $c = preg_replace("/\t|\[tags\]/", $str, $c); /*替换标签页面html*/
+                        $c = preg_replace("/t|[tags]/", $str, $c); /*替换标签页面html*/
                     } else { /*如果有标签索引*/
                         $rt = urldecode($hand[1]);
                         $ids = 1;
@@ -181,24 +194,24 @@ if ($type == 'getpage') {
                                     $found = true;
                                     $tp = file_get_contents('./../t/posts.html');
                                     require './../p/' . $key . '.php';
-                                    $tp = preg_replace("/\t|\[index\]/", $ids . '.', $tp);
-                                    $tp = preg_replace("/\t|\[title\]/", $ptitle, $tp);
+                                    $tp = preg_replace("/t|[index]/", $ids . '.', $tp);
+                                    $tp = preg_replace("/t|[title]/", $ptitle, $tp);
                                     if ($ptype == 'post') {
-                                        $tp = preg_replace("/\t|\[date\]/", turndate($pdat), $tp);
+                                        $tp = preg_replace("/t|[date]/", turndate($pdat), $tp);
                                     } else if ($ptype == 'page') {
-                                        $tp = preg_replace("/\t|\[date\]/", '[页面]', $tp);
+                                        $tp = preg_replace("/t|[date]/", '[页面]', $tp);
                                     }
-                                    $tp = preg_replace("/\t|\[link\]/", '#!' . $key, $tp);
+                                    $tp = preg_replace("/t|[link]/", '#!' . $key, $tp);
                                     $poststr = $poststr . $tp;
                                     $ids+= 1;
                                 }
                             }
                         }
                         if (empty($poststr)) {
-                            $poststr = '<center><h4 style=\'color:#AAA;\'>箱子里翻不出来这个标签诶</h4></center>';
+                            $poststr = '<center><h4 style='color:#AAA;'>箱子里翻不出来这个标签诶</h4></center>';
                         }
-                        $c = preg_replace("/\t|\[tags\]/", $poststr, $c); /*替换标签页面html*/
-                        $c = preg_replace("/\t|\标签页/", '标签：' . $rt, $c); /*替换标签头html*/
+                        $c = preg_replace("/t|[tags]/", $poststr, $c); /*替换标签页面html*/
+                        $c = preg_replace("/t|标签页/", '标签：' . $rt, $c); /*替换标签头html*/
                     }
                 } else {
                     $result['result'] = 'notok';
@@ -229,29 +242,29 @@ if ($type == 'getpage') {
                     $found = true;
                     require './../p/' . $page . '.php';
                     $c = file_get_contents('./../t/p.php');
-                    $c = preg_replace("/\t|\[title\]/", $ptitle . '.', $c);
-                    $c = preg_replace("/\t|\[date\]/", $pdat, $c);
-                    $c = preg_replace("/\t|\[commentid\]/", $page, $c);
+                    $c = preg_replace("/t|[title]/", $ptitle . '.', $c);
+                    $c = preg_replace("/t|[date]/", $pdat, $c);
+                    $c = preg_replace("/t|[commentid]/", $page, $c);
                     if ($_SESSION['log'] == 'yes') {
                         $edith = '<div><a href="/a/edit.php?e=' . $page . '" class="button button-rounded button-small"  target="_blank">编辑</a>&nbsp;<a href="/a/edit.php?e=' . $page . '&t=del" target="_self" class="button button-rounded button-small">删除</a></div>';
-                        $c = preg_replace("/\t|\[editbar\]/", $edith, $c);
+                        $c = preg_replace("/t|[editbar]/", $edith, $c);
                     } else {
-                        $c = preg_replace("/\t|\[editbar\]/", '', $c);
+                        $c = preg_replace("/t|[editbar]/", '', $c);
                     }
                     $html = $md->text((htmlspecialchars_decode(stripslashes($pcontent))));
-                    $c = preg_replace("/\t|\[content\]/", $html, $c);
+                    $c = preg_replace("/t|[content]/", $html, $c);
                     $tagh = explode(',', $tag);
-                    $taghs = '<div class=\'tagdiv\'><img src=\'./c/tag.png\' style=\'width:16px;\'></img>';
+                    $taghs = '<div class='tagdiv'><img src='./c/tag.png' style='width:16px;'></img>';
                     foreach ($tagh as $val) {
-                        $taghs = $taghs . '<a href=\'#tag/' . $val . '\' target=\'_self\' class=\'tag\'>' . $val . '</a>&nbsp;';
+                        $taghs = $taghs . '<a href='#tag/' . $val . '' target='_self' class='tag'>' . $val . '</a>&nbsp;';
                     }
                     $taghs = $taghs . '</div>';
-                    $c = preg_replace("/\t|\[tag\]/", $taghs, $c);
+                    $c = preg_replace("/t|[tag]/", $taghs, $c);
                     $kb = explode('[!page]', $c);
                     if ($ptype == 'page') {
                         $c = $kb[0];
                     } else {
-                        $c = preg_replace("/\t|\[!page\]/", '', $c);
+                        $c = preg_replace("/t|[!page]/", '', $c);
                     }
                 }
             }
@@ -261,22 +274,22 @@ if ($type == 'getpage') {
                     if ($pdat == $page) {
                         $found = true;
                         $c = file_get_contents('./../t/p.php');
-                        $c = preg_replace("/\t|\[title\]/", $ptitle . '.', $c);
-                        $c = preg_replace("/\t|\[date\]/", $pdat, $c);
-                        $c = preg_replace("/\t|\[commentid\]/", $key, $c);
+                        $c = preg_replace("/t|[title]/", $ptitle . '.', $c);
+                        $c = preg_replace("/t|[date]/", $pdat, $c);
+                        $c = preg_replace("/t|[commentid]/", $key, $c);
                         if ($_SESSION['log'] == 'yes') {
                             $edith = '<div><a href="/a/edit.php?e=' . $key . '" class="button button-rounded button-small"  target="_blank">编辑</a>&nbsp;<a href="/a/edit.php?e=' . $key . '&t=del" target="_self" class="button button-rounded button-small">删除</a></div>';
-                            $c = preg_replace("/\t|\[editbar\]/", $edith, $c);
+                            $c = preg_replace("/t|[editbar]/", $edith, $c);
                         } else {
-                            $c = preg_replace("/\t|\[editbar\]/", '', $c);
+                            $c = preg_replace("/t|[editbar]/", '', $c);
                         }
                         $html = $md->text((htmlspecialchars_decode(stripslashes($pcontent))));
-                        $c = preg_replace("/\t|\[content\]/", $html, $c);
+                        $c = preg_replace("/t|[content]/", $html, $c);
                         $kb = explode('[!page]', $c);
                         if ($ptype == 'page') {
                             $c = $kb[0];
                         } else {
-                            $c = preg_replace("/\t|\[!page\]/", '', $c);
+                            $c = preg_replace("/t|[!page]/", '', $c);
                         }
                     }
                 }
@@ -305,14 +318,14 @@ if ($type == 'getpage') {
                         $found = true;
                         $tp = file_get_contents('./../t/posts.html');
                         require './../p/' . $key . '.php';
-                        $tp = preg_replace("/\t|\[index\]/", $ids . '.', $tp);
-                        $tp = preg_replace("/\t|\[title\]/", $ptitle, $tp);
+                        $tp = preg_replace("/t|[index]/", $ids . '.', $tp);
+                        $tp = preg_replace("/t|[title]/", $ptitle, $tp);
                         if ($ptype == 'post') {
-                            $tp = preg_replace("/\t|\[date\]/", turndate($pdat), $tp);
+                            $tp = preg_replace("/t|[date]/", turndate($pdat), $tp);
                         } else if ($ptype == 'page') {
-                            $tp = preg_replace("/\t|\[date\]/", '[页面]', $tp);
+                            $tp = preg_replace("/t|[date]/", '[页面]', $tp);
                         }
-                        $tp = preg_replace("/\t|\[link\]/", '#!' . $key, $tp);
+                        $tp = preg_replace("/t|[link]/", '#!' . $key, $tp);
                         $poststr = $poststr . $tp;
                         $ids+= 1;
                     }
@@ -325,25 +338,25 @@ if ($type == 'getpage') {
                             $found = true;
                             $tp = file_get_contents('./../t/posts.html');
                             require './../p/' . $key . '.php';
-                            $tp = preg_replace("/\t|\[index\]/", $ids . '.', $tp);
-                            $tp = preg_replace("/\t|\[title\]/", $ptitle, $tp);
+                            $tp = preg_replace("/t|[index]/", $ids . '.', $tp);
+                            $tp = preg_replace("/t|[title]/", $ptitle, $tp);
                             if ($ptype == 'post') {
-                                $tp = preg_replace("/\t|\[date\]/", turndate($pdat), $tp);
+                                $tp = preg_replace("/t|[date]/", turndate($pdat), $tp);
                             } else if ($ptype == 'page') {
-                                $tp = preg_replace("/\t|\[date\]/", '[页面]', $tp);
+                                $tp = preg_replace("/t|[date]/", '[页面]', $tp);
                             }
-                            $tp = preg_replace("/\t|\[link\]/", '#!' . $key, $tp);
+                            $tp = preg_replace("/t|[link]/", '#!' . $key, $tp);
                             $poststr = $poststr . $tp;
                             $ids+= 1;
                         }
                     }
                 }
                 $c = file_get_contents('./../t/search.php');
-                $c = preg_replace("/\t|\搜索/", '搜索:' . $s, $c);
+                $c = preg_replace("/t|搜索/", '搜索:' . $s, $c);
                 if (empty($poststr)) {
-                    $poststr = '<center><h3 style=\'color:#AAA;\'>箱子里空空如也..</h3></center>';
+                    $poststr = '<center><h3 style='color:#AAA;'>箱子里空空如也..</h3></center>';
                 }
-                $c = preg_replace("/\t|\[searchs\]/", $poststr, $c);
+                $c = preg_replace("/t|[searchs]/", $poststr, $c);
                 if (!empty($c)) {
                     $result['r'] = $c;
                 } else {
@@ -399,20 +412,20 @@ if ($type == 'getpage') {
                 if (!in_array(intval($key), $tops, true)) { /*排除置顶文章*/
                     $tp = file_get_contents('./../t/posts.html');
                     require './../p/' . $key . '.php';
-                    $tp = preg_replace("/\t|\[index\]/", $ids . '.', $tp);
-                    $tp = preg_replace("/\t|\[title\]/", $ptitle, $tp);
+                    $tp = preg_replace("/t|[index]/", $ids . '.', $tp);
+                    $tp = preg_replace("/t|[title]/", $ptitle, $tp);
                     if ($ptype == 'post') {
-                        $tp = preg_replace("/\t|\[date\]/", turndate($val), $tp);
+                        $tp = preg_replace("/t|[date]/", turndate($val), $tp);
                     } else if ($ptype == 'page') {
-                        $tp = preg_replace("/\t|\[date\]/", '[页面]', $tp);
+                        $tp = preg_replace("/t|[date]/", '[页面]', $tp);
                     }
-                    $tp = preg_replace("/\t|\[link\]/", '#!' . $key, $tp);
+                    $tp = preg_replace("/t|[link]/", '#!' . $key, $tp);
                     $poststr = $poststr . $tp;
                     $ids+= 1;
                 }
             }
-            $c = preg_replace("/\t|\[posts\]/", $poststr, $c); /*替换文章html*/
-            $c = preg_replace("/\t|\[name\]/", name(), $c);
+            $c = preg_replace("/t|[posts]/", $poststr, $c); /*替换文章html*/
+            $c = preg_replace("/t|[name]/", name(), $c);
         } else {
             $result['result'] = 'notok';
             $result['msg'] = '没有更多了呢~.';
