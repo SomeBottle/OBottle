@@ -56,7 +56,7 @@ function replace($cp, $tp) {
             $rg2 = $range[1];
             $rt = preg_replace('/\[rand:(.*?)\]/i', rand($rg1, $rg2), $rt, 1);
             /*最先替换随机数*/
-        } else if ($tp == 'js' || $tp == 'css') {
+        } else if ($tp == 'js' || $tp == 'css' || $tp == 'file') {
             preg_match('/\[' . $tp . ':(.*?)\]/i', $rt, $match);
             $rt = preg_replace('/\[' . $tp . ':(.*?)\]/i', './t/' . $match[1], $rt, 1); /*替换CSS路径*/
         }
@@ -77,8 +77,7 @@ if ($type == 'getpage') {
             $c = preg_replace("/\t|\[year\]/", date('Y'), $c); /*替换小站年份*/
             $c = preg_replace("/\t|\[avatar\]/", avatar(), $c); /*替换小站头像*/
             $c = preg_replace("/\t|\[host\]/", host(), $c); /*替换小站链接*/
-            $c = replace($c, 'css');
-            $c = replace($c, 'js');
+            $c = replace($c, 'file');
             if ($page == 'm') { /*生成文章列表*/
                 $poststr = '';
                 if (file_exists('./../p/index.php')) {
