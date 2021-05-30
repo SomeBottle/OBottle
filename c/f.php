@@ -43,4 +43,7 @@ function getchangetime(){
 		return 'nolog';
 	}
 }
+function filter($c) { /*xss过滤*/
+    return str_ireplace(array("\r\n", "\r", "\n"), ' <br> ', addslashes(htmlspecialchars($c, ENT_QUOTES))); /*这里换行标签<br>刻意留了空格，因为在前端识别url的时候可能会连同br一同牵连进去*/
+}
 ?>

@@ -13,10 +13,10 @@ if ($_SESSION['log'] !== 'yes') {
 session_write_close();
 require_once './f.php';
 $type = $_GET['type'];
-$t = $_POST['title'];
+$t = filter($_POST['title']);
 $c = urldecode($_POST['content']);
-$d = $_POST['dat'];
-$a = $_POST['tag'];
+$d = filter($_POST['dat']);
+$a = filter($_POST['tag']);
 $edits = $_POST['editn'];
 $zhiding = $_POST['ifzd'];
 $fstr = '';
